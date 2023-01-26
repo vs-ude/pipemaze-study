@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="initial-scale=0.6">
+
+    <script type="module" src="./Main.js"></script>
+    <link rel="stylesheet" href="./Main.css"></link>
+    <link rel="stylesheet" href="./bootstrap.min.css"></link>
+    <script src="./bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container row" id="main">
+        <div id="counter" style="text-align: right;">
+            <h1 id="rounds-counter"></h1>
+            <div id="time">
+                <i id="clock" class="fas fa-clock" style="font-size:38px;color:black"></i>
+                <h1>Game time:</h1>
+                <h1 id="seconds-counter" style="color: black"></h1>
+            </div>
+        </div>
+        <h1 id="score" style="display: none"></h1>
+        <div id="newcounter" style="text-align: right;">
+            <div id="newtime">
+                <h1>Round time:</h1>
+                <h1 id="newseconds-counter"></h1>
+            </div>
+        </div>
+        <h1 id="intermediate-score"></h1>
+
+        <button type="button" id ="nextButton" class="col-6 btn btn-primary mx-auto" onclick="next();">Next</button>
+
+        <div id="pipeInput" class="flex-column justify-content-center">
+            <div id="recommendation" class="col-6 alert alert-primary mx-auto" role="alert">
+            </div>
+
+            <div id="grid-containerMaze" class="mx-auto">
+                <canvas id="fog"></canvas>
+
+                <img class="mazePicture" id="mazePicture"></img>
+                <div id="selection">
+                    <button style="left: 18px;" onclick="selection('selection1');" id="selection1" data-selection="0" class="selection"><img src="Arrow-Down.png"/></button>
+                    <button style="left: 131px;" onclick="selection('selection2');" id="selection2" data-selection="1" class="selection"><img src="Arrow-Down.png"/></button>
+                    <button style="left: 244px;" onclick="selection('selection3');" id="selection3" data-selection="2" class="selection"><img src="Arrow-Down.png"/></button>
+                    <button style="left: 356px;" onclick="selection('selection4');" id="selection4" data-selection="3" class="selection"><img src="Arrow-Down.png"/></button>
+                    <button style="left: 469px;" onclick="selection('selection5');" id="selection5" data-selection="4" class="selection"><img src="Arrow-Down.png"/></button>
+                    <button style="left: 581px;" onclick="selection('selection6');" id="selection6" data-selection="5" class="selection"><img src="Arrow-Down.png"/></button>
+                    <button style="left: 694px;" onclick="selection('selection7');" id="selection7" data-selection="6" class="selection"><img src="Arrow-Down.png"/></button>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
