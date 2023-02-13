@@ -11,6 +11,15 @@ The project also contains a Dockerfile which is used to run our tool with Docker
 To be able to save the recorded mouse data points, you need to enter a path to where they should be saved.<br>
 This is done in _docker-compose.yml_ at line 7.
 
+Given the following folder structure (see below), you can save the recordings to the _out_ folder by changing the line to `- "./out:/app/out"`
+
+```
+pipemaze-study
+|- client
+|- out
+|- server
+```
+
 ## Usage
 To start and access the website, you need to compile the project and start a docker container.<br>
 From the project folder, run `docker-compose -f docker-compose.yml up --build`.<br>
