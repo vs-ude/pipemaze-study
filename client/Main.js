@@ -424,7 +424,9 @@ window.onload = function () {
     incrementSeconds();
 
     if (!localStorage.getItem('id')) {
-        localStorage.setItem('id', getRandomInt(999999999999));
+        localStorage.setItem('id', 0);
+    } else {
+        localStorage.setItem('id', Number(localStorage.getItem('id')) + 1);
     }
 
     document.getElementById("mazePicture").onload = function () {
