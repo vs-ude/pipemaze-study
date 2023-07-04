@@ -1,5 +1,5 @@
 # Pipe Maze Study
-This tool was developed for the Paper _Revising Poor Man's Eye Tracker for Crowd-Sourced Studies_ by the [Distributed Systems Group](https://vs.uni-due.de/) of University Duisburg-Essen.
+This tool was developed for the Paper [_Revising Poor Man's Eye Tracker for Crowd-Sourced Studies_](https://doi.org/10.1109/PerComWorkshops56833.2023.10150386) by the [Distributed Systems Group](https://vs.uni-due.de/) of University Duisburg-Essen.
 
 Using this code, an online-based crowd sourced study was carried out in which test persons had to solve different mazes.
 Their results and mouse movements were recorded and can be visualised using our [Visualizer Tool](https://github.com/vs-ude/pipemaze-visualizer).
