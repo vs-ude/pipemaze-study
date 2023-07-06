@@ -11,12 +11,17 @@ body {
     transform-origin: top;
 }
 
+
 #nextButton{
     background-color: #008CBA;
     color: white;
     margin-top: 60px;
     margin-bottom: 20px;
     font-size: 25px;
+}
+
+#intermediate-score{
+    margin-top: 60px;
 }
 
 

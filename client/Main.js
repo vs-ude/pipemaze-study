@@ -32,6 +32,7 @@ let OFFSET = 150;
 
 //Button
 let next = () => {
+
     let elements = Array.prototype.slice.call(document.getElementsByClassName('selected'));
 
     let select = elements.map(function (element) {
@@ -284,6 +285,8 @@ function setChosenColors() {
 
     numberOfRoundsMax = lastRounds;
 
+    //console.log("giveWrongRecommendation:"+giveWrongRecommendation+", numberOfWrongChoices:"+numberOfWrongChoices+", rightChoice:"+rightChoice)
+
     if (roundNumber == firstFalseRound || roundNumber == lastRounds) {
         numberOfWrongChoices = 0;
         giveWrongRecommendation = true;
@@ -299,12 +302,24 @@ function setChosenColors() {
         return recommendation[roundNumber - 10];
     } else {
         if (giveWrongRecommendation == true && numberOfWrongChoices == 3) {
-            if (numberOfWrongChoices == 3) {
-                document.getElementById("intermediate-score").hidden = false;
-                document.getElementById("intermediate-score").innerText = "You have reached " + score + " out of " + (firstFalseRound + 2) + " points";
-            }
-        } else {
-            document.getElementById("intermediate-score").hidden = true;
+            document.getElementById("intermediate-score").hidden = false;
+            document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You have chosen the wrong solution in the last 3 rounds. The AI made a mistake in its suggestion.";
+        } 
+        else if(giveWrongRecommendation != true && numberOfWrongChoices == 1 && rightChoice ==true){
+            document.getElementById("intermediate-score").hidden = false;
+            document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You found the correct solution in the last round, although the AI made a mistake in its suggestion 2 times.";
+        
+        }
+        else if(giveWrongRecommendation != true && numberOfWrongChoices == 2 && rightChoice==true){
+            document.getElementById("intermediate-score").hidden = false;
+            document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You found the correct solution in the last round, although the AI made a mistake in its suggestion 3 times.";
+        }
+        else if(giveWrongRecommendation != true && numberOfWrongChoices == 0 && rightChoice==true){
+            document.getElementById("intermediate-score").hidden = false;
+            document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You found the correct solution in the last round, even though the AI made a mistake in its suggestion.";
+        }
+        else{
+           document.getElementById("intermediate-score").hidden = true;
         }
 
         _colorList = recommendation[roundNumber];
@@ -351,7 +366,7 @@ function getSelection() {
     selectedColorInNumber.push("[");
     selectedColorInNumber.push(selection);
     selectedColorInNumber.push("]");
-    console.log("Selected Values all rounds:" + selectedColorInNumber);
+    //console.log("Selected Values all rounds:" + selectedColorInNumber);
 }
 
 function setGameMode() {
@@ -368,7 +383,7 @@ function setGameMode() {
         firstFalseRound = 20;
     }
 
-    console.log(gameMode);
+   console.log(gameMode);
 }
 
 
@@ -477,7 +492,7 @@ function openWebsocket(url, port) {
                 return;
             }
 
-            console.log(packetCount);
+            //console.log(packetCount);
             socket.send(JSON.stringify(msg));
         }
     }
