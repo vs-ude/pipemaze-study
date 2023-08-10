@@ -1,29 +1,30 @@
 let _colorList = [];
 
-let score       = 0;
+let score = 0;
 let runningTime = 0;
-let roundTime   = 0;
+let roundTime = 0;
 let roundNumber = 0;
 
-let firstFalseRound         = 10;
-let rightChoice             = false;
+let firstFalseRound = 10;
+let rightChoice = false;
 let giveWrongRecommendation = false;
 
-let numberOfWrongChoices      = 0;
+let numberOfWrongChoices = 0;
 let numberOfWrongChoicesGiven = 0;
-let numberOfRoundsMax         = 20;
+let numberOfRoundsMax = 20;
 
-let gameMode              = 0;
+let gameMode = 1;
 let selectedColorInNumber = [];
-let i                     = "";
-let rnd                   = "";
+let i = "";
+let rnd = "";
+var hideScoreHint = false
 
 
 let download = () => {
     const link = document.createElement('a');
 
     link.download = new Date().getTime() + '_' + 'test'.join('-') + '.png';
-    link.href     = this.canvas.toDataURL();
+    link.href = this.canvas.toDataURL();
 
     link.click();
 }
@@ -62,7 +63,7 @@ let next = () => {
     _colorList = [];
 
     Socket.send({
-        id:   localStorage.getItem('id'),
+        id: localStorage.getItem('id'),
         type: "2",
         data: [Date.now().toString(), roundNumber.toString(), score.toString()]
     });
@@ -285,11 +286,16 @@ function setChosenColors() {
 
     numberOfRoundsMax = lastRounds;
 
-    //console.log("giveWrongRecommendation:"+giveWrongRecommendation+", numberOfWrongChoices:"+numberOfWrongChoices+", rightChoice:"+rightChoice)
+    console.log("giveWrongRecommendation:" + giveWrongRecommendation + ", numberOfWrongChoices:" + numberOfWrongChoices + ", rightChoice:" + rightChoice)
+    console.log(hideScoreHint)
 
     if (roundNumber == firstFalseRound || roundNumber == lastRounds) {
         numberOfWrongChoices = 0;
         giveWrongRecommendation = true;
+    }
+
+    if (hideScoreHint == true) {
+        document.getElementById("intermediate-score").hidden = true;
     }
 
     if (giveWrongRecommendation != false && numberOfWrongChoices < 3) {
@@ -297,29 +303,35 @@ function setChosenColors() {
             numberOfWrongChoicesGiven = numberOfWrongChoicesGiven + 1;
         }
 
+        document.getElementById("intermediate-score").hidden = true;
         _colorList = recommendation[roundNumber];
 
         return recommendation[roundNumber - 10];
     } else {
-        if (giveWrongRecommendation == true && numberOfWrongChoices == 3) {
-            document.getElementById("intermediate-score").hidden = false;
-            document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You have chosen the wrong solution in the last 3 rounds. The AI made a mistake in its suggestion.";
-        } 
-        else if(giveWrongRecommendation != true && numberOfWrongChoices == 1 && rightChoice ==true){
-            document.getElementById("intermediate-score").hidden = false;
-            document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You found the correct solution in the last round, although the AI made a mistake in its suggestion 2 times.";
-        
-        }
-        else if(giveWrongRecommendation != true && numberOfWrongChoices == 2 && rightChoice==true){
-            document.getElementById("intermediate-score").hidden = false;
-            document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You found the correct solution in the last round, although the AI made a mistake in its suggestion 3 times.";
-        }
-        else if(giveWrongRecommendation != true && numberOfWrongChoices == 0 && rightChoice==true){
-            document.getElementById("intermediate-score").hidden = false;
-            document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You found the correct solution in the last round, even though the AI made a mistake in its suggestion.";
-        }
-        else{
-           document.getElementById("intermediate-score").hidden = true;
+        if (hideScoreHint == false) {
+            if (giveWrongRecommendation == true && numberOfWrongChoices == 3) {
+                document.getElementById("intermediate-score").hidden = false;
+                document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You have chosen the wrong solution in the last 3 rounds. The AI made a mistake in its suggestion. Please continue the game.";
+                hideScoreHint = true
+            }
+            else if (giveWrongRecommendation != true && numberOfWrongChoices == 1 && rightChoice == true) {
+                document.getElementById("intermediate-score").hidden = false;
+                document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You found the correct solution in the last round, although the AI made a mistake in its suggestion 2 times. Please continue the game.";
+                hideScoreHint = true
+            }
+            else if (giveWrongRecommendation != true && numberOfWrongChoices == 2 && rightChoice == true) {
+                document.getElementById("intermediate-score").hidden = false;
+                document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You found the correct solution in the last round, although the AI made a mistake in its suggestion 3 times. Please continue the game.";
+                hideScoreHint = true
+            }
+            else if (giveWrongRecommendation != true && numberOfWrongChoices == 0 && rightChoice == true) {
+                document.getElementById("intermediate-score").hidden = false;
+                document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You found the correct solution in the last round, even though the AI made a mistake in its suggestion. Please continue the game.";
+                hideScoreHint = true
+            }
+            else {
+                document.getElementById("intermediate-score").hidden = true;
+            }
         }
 
         _colorList = recommendation[roundNumber];
@@ -383,7 +395,7 @@ function setGameMode() {
         firstFalseRound = 20;
     }
 
-   console.log(gameMode);
+    console.log(gameMode);
 }
 
 
@@ -393,7 +405,7 @@ function incrementSeconds() {
 
     runningTime += 1;
     roundTime += 1;
-    document.getElementById('seconds-counter').innerText    = runningTime + " seconds";
+    document.getElementById('seconds-counter').innerText = runningTime + " seconds";
     document.getElementById('newseconds-counter').innerText = roundTime + " seconds";
 
     if (roundTime > 10) {
@@ -443,7 +455,7 @@ window.onload = function () {
     }
 
     document.getElementById("mazePicture").onload = function () {
-        document.getElementById("fog").width  = document.getElementById("mazePicture").clientWidth;
+        document.getElementById("fog").width = document.getElementById("mazePicture").clientWidth;
         document.getElementById("fog").height = document.getElementById("mazePicture").clientHeight - OFFSET;
 
         initFog();
@@ -463,7 +475,6 @@ function resetRoundTimer() {
 
 function openWebsocket(url, port) {
     console.log("Opening socket: " + url + ":" + port);
-
     let socket = new WebSocket('ws://' + url + '/api/action');
 
     if (port) {
@@ -522,14 +533,14 @@ function initFog() {
         let pY = ev.offsetY;
 
         Socket.sendHighFreq({
-            id:   localStorage.getItem('id'),
+            id: localStorage.getItem('id'),
             type: "1",
             data: [Date.now().toString(), pX.toString(), pY.toString(), roundNumber.toString()]
         });
 
         let r1Tmp = r1;
         let r2Tmp = r2;
-        
+
         // reveal wherever we drag
         let radGrd = ctx.createRadialGradient(pX, pY, r1Tmp, pX, pY, r2Tmp);
         radGrd.addColorStop(1, 'rgba( 0, 0, 0, 0 )');
