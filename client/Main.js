@@ -6,8 +6,10 @@ let roundTime = 0;
 let roundNumber = 0;
 
 let firstFalseRound = 10;
-let rightChoice = false;
+let rightChoice = true;
 let giveWrongRecommendation = false;
+var hideScoreHint = false
+var lastReccomendationFalse = false
 
 let numberOfWrongChoices = 0;
 let numberOfWrongChoicesGiven = 0;
@@ -17,8 +19,6 @@ let gameMode = 1;
 let selectedColorInNumber = [];
 let i = "";
 let rnd = "";
-var hideScoreHint = false
-
 
 let download = () => {
     const link = document.createElement('a');
@@ -210,9 +210,6 @@ function showMaze() {
     document.getElementById("mazePicture").src = imageNameStartPoint;
 }
 
-
-
-
 function setChosenColors() {
     let recommendation = [
         ['Blue', 'Yellow', 'Purple'],
@@ -268,15 +265,13 @@ function setChosenColors() {
         ['Orange', 'Purple', 'Red', 'Green', 'Blue']
     ];
 
-
+    let lastRounds;
 
     if (rightChoice === true) {
         giveWrongRecommendation = false;
     } else {
         numberOfWrongChoices = numberOfWrongChoices + 1;
     }
-
-    let lastRounds;
 
     if (numberOfWrongChoicesGiven >= 3) {
         lastRounds = (firstFalseRound * 2) + 2;
@@ -286,22 +281,23 @@ function setChosenColors() {
 
     numberOfRoundsMax = lastRounds;
 
-    console.log("giveWrongRecommendation:" + giveWrongRecommendation + ", numberOfWrongChoices:" + numberOfWrongChoices + ", rightChoice:" + rightChoice)
-    console.log(hideScoreHint)
+    if (hideScoreHint == true) {
+        document.getElementById("intermediate-score").hidden = true;
+    }
 
     if (roundNumber == firstFalseRound || roundNumber == lastRounds) {
         numberOfWrongChoices = 0;
         giveWrongRecommendation = true;
     }
+   
+    console.log("giveWrongRecommendation:" + giveWrongRecommendation + ", numberOfWrongChoices:" + numberOfWrongChoices + ", rightChoice:" + rightChoice+", Score:"+score)
+    console.log(hideScoreHint)
 
-    if (hideScoreHint == true) {
-        document.getElementById("intermediate-score").hidden = true;
-    }
-
-    if (giveWrongRecommendation != false && numberOfWrongChoices < 3) {
+    if (giveWrongRecommendation == true && numberOfWrongChoices < 3) {
         if (roundNumber <= (firstFalseRound * 2) && roundNumber != firstFalseRound) {
             numberOfWrongChoicesGiven = numberOfWrongChoicesGiven + 1;
         }
+        lastReccomendationFalse = true
 
         document.getElementById("intermediate-score").hidden = true;
         _colorList = recommendation[roundNumber];
@@ -309,31 +305,38 @@ function setChosenColors() {
         return recommendation[roundNumber - 10];
     } else {
         if (hideScoreHint == false) {
-            if (giveWrongRecommendation == true && numberOfWrongChoices == 3) {
+            if (lastReccomendationFalse == true && numberOfWrongChoices == 3) {
                 document.getElementById("intermediate-score").hidden = false;
                 document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You have chosen the wrong solution in the last 3 rounds. The AI made a mistake in its suggestion. Please continue the game.";
                 hideScoreHint = true
+                giveWrongRecommendation = false
+                lastReccomendationFalse = false
             }
-            else if (giveWrongRecommendation != true && numberOfWrongChoices == 1 && rightChoice == true) {
+            else if (lastReccomendationFalse == true && numberOfWrongChoices == 1 && rightChoice == true) {
                 document.getElementById("intermediate-score").hidden = false;
                 document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You found the correct solution in the last round, although the AI made a mistake in its suggestion 2 times. Please continue the game.";
                 hideScoreHint = true
+                giveWrongRecommendation = false
+                lastReccomendationFalse = false
             }
-            else if (giveWrongRecommendation != true && numberOfWrongChoices == 2 && rightChoice == true) {
+            else if (lastReccomendationFalse == true && numberOfWrongChoices == 2 && rightChoice == true) {
                 document.getElementById("intermediate-score").hidden = false;
                 document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You found the correct solution in the last round, although the AI made a mistake in its suggestion 3 times. Please continue the game.";
                 hideScoreHint = true
+                giveWrongRecommendation = false
+                lastReccomendationFalse = false
             }
-            else if (giveWrongRecommendation != true && numberOfWrongChoices == 0 && rightChoice == true) {
+            else if (lastReccomendationFalse == true && numberOfWrongChoices == 0) {
                 document.getElementById("intermediate-score").hidden = false;
                 document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You found the correct solution in the last round, even though the AI made a mistake in its suggestion. Please continue the game.";
                 hideScoreHint = true
+                giveWrongRecommendation = false
+                lastReccomendationFalse = false
             }
             else {
                 document.getElementById("intermediate-score").hidden = true;
             }
         }
-
         _colorList = recommendation[roundNumber];
 
         return recommendation[roundNumber];
