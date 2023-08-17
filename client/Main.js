@@ -291,7 +291,6 @@ function setChosenColors() {
     }
    
     console.log("giveWrongRecommendation:" + giveWrongRecommendation + ", numberOfWrongChoices:" + numberOfWrongChoices + ", rightChoice:" + rightChoice+", Score:"+score)
-    console.log(hideScoreHint)
 
     if (giveWrongRecommendation == true && numberOfWrongChoices < 3) {
         if (roundNumber <= (firstFalseRound * 2) && roundNumber != firstFalseRound) {
@@ -314,7 +313,7 @@ function setChosenColors() {
             }
             else if (lastReccomendationFalse == true && numberOfWrongChoices == 1 && rightChoice == true) {
                 document.getElementById("intermediate-score").hidden = false;
-                document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You found the correct solution in the last round, although the AI made a mistake in its suggestion 2 times. Please continue the game.";
+                document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 1) + "</b> points. You found the correct solution in the last round, although the AI made a mistake in its suggestion 2 times. Please continue the game.";
                 hideScoreHint = true
                 giveWrongRecommendation = false
                 lastReccomendationFalse = false
@@ -328,7 +327,7 @@ function setChosenColors() {
             }
             else if (lastReccomendationFalse == true && numberOfWrongChoices == 0) {
                 document.getElementById("intermediate-score").hidden = false;
-                document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound + 2) + "</b> points. You found the correct solution in the last round, even though the AI made a mistake in its suggestion. Please continue the game.";
+                document.getElementById("intermediate-score").innerHTML = "You have reached <b>" + score + " out of " + (firstFalseRound) + "</b> points. You found the correct solution in the last round, even though the AI made a mistake in its suggestion. Please continue the game.";
                 hideScoreHint = true
                 giveWrongRecommendation = false
                 lastReccomendationFalse = false
@@ -445,7 +444,6 @@ window.onload = function () {
         handleResize(tmp, tmp.clientHeight, tmp.clientWidth);
     });
 
-
     setGameMode();
 
     document.getElementById('score').innerHTML = "Score: " + score;
@@ -492,7 +490,6 @@ function openWebsocket(url, port) {
             if (socket.readyState != WebSocket.OPEN) {
                 return;
             }
-
             socket.send(JSON.stringify(msg));
         },
 
@@ -505,14 +502,11 @@ function openWebsocket(url, port) {
             if (packetCount % dropEvery > 0) {
                 return;
             }
-
             //console.log(packetCount);
             socket.send(JSON.stringify(msg));
         }
     }
 }
-
-
 
 function initFog() {
     let canvas = document.getElementById("fog");
