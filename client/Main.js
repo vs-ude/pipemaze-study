@@ -289,8 +289,8 @@ function setChosenColors() {
         numberOfWrongChoices = 0;
         giveWrongRecommendation = true;
     }
-   
-    console.log("giveWrongRecommendation:" + giveWrongRecommendation + ", numberOfWrongChoices:" + numberOfWrongChoices + ", rightChoice:" + rightChoice+", Score:"+score)
+
+    console.log("giveWrongRecommendation:" + giveWrongRecommendation + ", numberOfWrongChoices:" + numberOfWrongChoices + ", rightChoice:" + rightChoice + ", Score:" + score)
 
     if (giveWrongRecommendation == true && numberOfWrongChoices < 3) {
         if (roundNumber <= (firstFalseRound * 2) && roundNumber != firstFalseRound) {
@@ -384,18 +384,25 @@ function getSelection() {
 }
 
 function setGameMode() {
-    gameMode = (localStorage.getItem('id') % 2) + 1;
+    gameMode = (parseInt(localStorage.getItem('id'), 10) % 2) + 1;
 
-    if (gameMode === 1) {
-        numberOfRoundsMax = 20;
-        firstFalseRound = 10;
-    } else if (gameMode === 3) {
-        numberOfRoundsMax = 30;
-        firstFalseRound = 15;
-    } else if (gameMode === 2) {
-        numberOfRoundsMax = 40;
-        firstFalseRound = 20;
-    }
+    /* if (gameMode === 1) {
+         numberOfRoundsMax = 20;
+         firstFalseRound = 10;
+     } else if (gameMode === 3) {
+         numberOfRoundsMax = 30;
+         firstFalseRound = 15;
+     } else if (gameMode === 2) {*/
+    numberOfRoundsMax = 40;
+    firstFalseRound = 20;
+    // }
+
+    console.log(gameMode);
+}
+
+function setGameMode2() {
+    numberOfRoundsMax = 40;
+    firstFalseRound = 20;
 
     console.log(gameMode);
 }
@@ -444,16 +451,16 @@ window.onload = function () {
         handleResize(tmp, tmp.clientHeight, tmp.clientWidth);
     });
 
-    setGameMode();
+    if (!localStorage.getItem('id')) {
+        localStorage.setItem('id', getRandomInt(999999999999));
+    }
+
+    setGameMode2();
 
     document.getElementById('score').innerHTML = "Score: " + score;
 
     newGame();
     incrementSeconds();
-
-    if (!localStorage.getItem('id')) {
-        localStorage.setItem('id', getRandomInt(999999999999));
-    }
 
     document.getElementById("mazePicture").onload = function () {
         document.getElementById("fog").width = document.getElementById("mazePicture").clientWidth;
